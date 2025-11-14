@@ -21,26 +21,42 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS
+# ------------------------------------------------------
+# CORS CONFIG (IMPORTANT)
+# ------------------------------------------------------
+origins = [
+    "http://localhost:3000",            # Local frontend
+    "https://campus360-ai.vercel.app",  # Vercel deployment URL
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# ------------------------------------------------------
+# Models
+# ------------------------------------------------------
 class Notice(BaseModel):
     title: str
     content: str
     category: Optional[str] = None
 
 
+# ------------------------------------------------------
+# Health Check
+# ------------------------------------------------------
 @app.get("/")
 async def root():
     return {"status": "healthy", "service": "CampusConnect-AI"}
 
 
+# ------------------------------------------------------
+# Fetch Notices
+# ------------------------------------------------------
 @app.get("/api/notices")
 async def get_notices(limit: int = 10):
     try:
@@ -53,10 +69,14 @@ async def get_notices(limit: int = 10):
             .execute()
         )
         return {"notices": response.data}
+
     except Exception as e:
         raise HTTPException(500, str(e))
 
 
+# ------------------------------------------------------
+# Telegram Webhook
+# ------------------------------------------------------
 @app.post("/webhook/telegram")
 async def receive_update(request: Request):
     try:
@@ -66,11 +86,11 @@ async def receive_update(request: Request):
         if not message:
             return {"status": "ignored", "reason": "No message found"}
 
-        # extract usable text
+        # Extract text safely
         text = (
-            message.get("text") or
-            message.get("caption") or
-            (message.get("reply_to_message", {}).get("text"))
+            message.get("text")
+            or message.get("caption")
+            or (message.get("reply_to_message", {}).get("text"))
         )
 
         if not text or text.strip() == "":
@@ -97,6 +117,9 @@ async def receive_update(request: Request):
         raise HTTPException(500, str(e))
 
 
+# ------------------------------------------------------
+# Manual Notice POST
+# ------------------------------------------------------
 @app.post("/api/notices")
 async def create_notice(notice: Notice):
     try:
@@ -120,6 +143,9 @@ async def create_notice(notice: Notice):
         raise HTTPException(500, str(e))
 
 
+# ------------------------------------------------------
+# Local Development Runner
+# ------------------------------------------------------
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", 8000))
