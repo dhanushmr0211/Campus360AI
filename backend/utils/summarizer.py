@@ -1,23 +1,30 @@
-from transformers import pipeline
+# summarizer.py  (NEW - using OpenAI API)
+from openai import OpenAI
+import os
 
-# Load the model once (Correction: global caching)
-summarizer = pipeline("summarization", model="t5-small")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def summarize_text(text: str) -> str:
-    """Summarize long text or return short text as-is."""
     try:
-        # If the message is short, no need to summarize
-        if len(text.split()) < 10:
-            return text
+        prompt = f"""
+        Summarize the following announcement in simple, short college student-friendly language.
+        Keep it under 2 lines.
 
-        result = summarizer(
-            text,
-            max_length=60,
-            min_length=15,
-            do_sample=False
+        Announcement:
+        {text}
+        """
+
+        response = client.chat.completions.create(
+            model="gpt-4o-mini", 
+            messages=[
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=60
         )
-        return result[0]["summary_text"]
+
+        summary = response.choices[0].message.content.strip()
+        return summary
 
     except Exception as e:
         print("❌ Summarization failed:", e)
-        return text[:150]  # fallback summary
+        return text[:150]  # fallback
