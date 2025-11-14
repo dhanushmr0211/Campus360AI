@@ -1,30 +1,14 @@
-# summarizer.py  (NEW - using OpenAI API)
-from openai import OpenAI
 import os
+from openai import OpenAI
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def summarize_text(text: str) -> str:
     try:
-        prompt = f"""
-        Summarize the following announcement in simple, short college student-friendly language.
-        Keep it under 2 lines.
-
-        Announcement:
-        {text}
-        """
-
-        response = client.chat.completions.create(
-            model="gpt-4o-mini", 
-            messages=[
-                {"role": "user", "content": prompt}
-            ],
-            max_tokens=60
+        response = client.responses.create(
+            model="gpt-4o-mini",
+            input=f"Summarize this notice in 20-30 words:\n\n{text}"
         )
-
-        summary = response.choices[0].message.content.strip()
-        return summary
-
-    except Exception as e:
-        print("❌ Summarization failed:", e)
+        return response.output[0].content[0].text
+    except:
         return text[:150]  # fallback
