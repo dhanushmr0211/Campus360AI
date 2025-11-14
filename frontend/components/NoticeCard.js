@@ -1,17 +1,23 @@
 export default function NoticeCard({ notice }) {
+  const badgeClass = {
+    Academic: "badge badge-academic",
+    Technical: "badge badge-technical",
+    Cultural: "badge badge-cultural",
+    Sports: "badge badge-sports",
+    General: "badge badge-general",
+  }[notice.category] || "badge badge-general";
+
   return (
-    <div className="border p-4 rounded-lg shadow-sm mb-4 bg-white">
-      <h2 className="text-lg font-semibold">{notice.title}</h2>
+    <div className="card">
+      <div className="title">{notice.title}</div>
 
-      <p className="text-gray-700 mt-2">{notice.summary}</p>
+      <div className="summary">{notice.summary}</div>
 
-      <p className="text-sm text-blue-600 mt-2">
-        Category: {notice.category}
-      </p>
+      <div className={badgeClass}>{notice.category}</div>
 
-      <p className="text-xs text-gray-400 mt-2">
+      <div className="timestamp">
         {new Date(notice.created_at).toLocaleString()}
-      </p>
+      </div>
     </div>
   );
 }
