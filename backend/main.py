@@ -26,7 +26,7 @@ app = FastAPI(
 # ------------------------------------------------------
 origins = [
     "http://localhost:3000",            # Local frontend
-    "https://campus360-ai.vercel.app",  # Vercel deployment URL
+    "https://campus360-ai-hmdp.vercel.app",  # Vercel deployment URL
 ]
 
 app.add_middleware(
