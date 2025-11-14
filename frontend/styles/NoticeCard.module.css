@@ -1,86 +1,53 @@
 .card {
   background: white;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
-  position: relative;
-  overflow: hidden;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+  transition: 0.3s ease;
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-}
-
-.categoryBadge {
-  display: inline-block;
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
-  color: white;
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
+  transform: translateY(-6px);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
 }
 
 .title {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 0.75rem;
-  line-height: 1.4;
+  margin-bottom: 8px;
 }
 
 .summary {
-  color: #555;
-  line-height: 1.6;
-  margin-bottom: 1rem;
-  font-size: 0.95rem;
-}
-
-.expandButton {
-  background: none;
-  border: none;
-  color: #3498db;
-  font-weight: 600;
-  padding: 0.5rem 0;
-  font-size: 0.9rem;
-  transition: color 0.3s;
-}
-
-.expandButton:hover {
-  color: #2980b9;
-  text-decoration: underline;
-}
-
-.fullContent {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #eee;
-}
-
-.fullContent h3 {
   font-size: 1rem;
-  color: #2c3e50;
-  margin-bottom: 0.5rem;
+  color: #444;
+  margin-bottom: 14px;
 }
 
-.fullContent p {
-  color: #555;
-  line-height: 1.6;
-  font-size: 0.9rem;
-}
-
-.footer {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid #eee;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.timestamp {
+.category {
   font-size: 0.85rem;
-  color: #7f8c8d;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #0070f3;
+  margin-bottom: 6px;
+}
+
+.date {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 14px;
+}
+
+.button {
+  background: #0070f3;
+  padding: 10px 14px;
+  color: white !important;
+  border-radius: 10px;
+  font-weight: 600;
+  display: inline-block;
+  transition: 0.2s;
+}
+
+.button:hover {
+  background: #0059c9;
 }

@@ -1,61 +1,73 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
-import Loader from "@/components/Loader";
 import NoticeCard from "@/components/NoticeCard";
+import Loader from "@/components/Loader";
+import styles from "@/styles/Home.module.css";
 
 export default function Home() {
   const [notices, setNotices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("All");
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const backendURL = process.env.NEXT_PUBLIC_API_URL + "/api/notices";
 
   useEffect(() => {
-    async function fetchNotices() {
-      try {
-        const res = await fetch(`${API_URL}/api/notices`);
-        const data = await res.json();
-
+    fetch(backendURL)
+      .then(res => res.json())
+      .then(data => {
         setNotices(data.notices || []);
-      } catch (err) {
-        console.error("Error fetching notices:", err);
-      } finally {
         setLoading(false);
-      }
-    }
-
-    fetchNotices();
+      });
   }, []);
 
+  const filteredNotices = notices.filter(n => 
+    (filter === "All" || n.category === filter) &&
+    (n.summary.toLowerCase().includes(search.toLowerCase()) ||
+     n.title.toLowerCase().includes(search.toLowerCase()))
+  );
+
   return (
-    <div>
+    <>
       <Navbar />
 
-      <div style={{ padding: "20px" }}>
-        <h1 style={{ marginBottom: "10px" }}>Campus360 AI</h1>
-        <p style={{ marginBottom: "20px" }}>
-          Welcome to your AI-powered campus notice dashboard.
-        </p>
+      <main className={styles.container}>
+        <h1>Campus360 AI</h1>
+        <p className={styles.subtitle}>Your AI-powered smart notice board.</p>
+
+        {/* Search Bar */}
+        <input
+          type="text"
+          placeholder="Search notices..."
+          className={styles.search}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        {/* Filters */}
+        <div className={styles.filters}>
+          {["All", "Academic", "General", "Cultural", "Sports"].map(c => (
+            <button
+              key={c}
+              className={`${styles.filterBtn} ${filter === c ? styles.active : ""}`}
+              onClick={() => setFilter(c)}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
 
         {loading ? (
           <Loader />
-        ) : notices.length === 0 ? (
-          <p>No notices available.</p>
         ) : (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-              gap: "20px",
-            }}
-          >
-            {notices.map((notice) => (
-              <NoticeCard key={notice.id} notice={notice} />
+          <div className={styles.grid}>
+            {filteredNotices.map((notice, i) => (
+              <NoticeCard key={i} notice={notice} />
             ))}
           </div>
         )}
-      </div>
-    </div>
+      </main>
+    </>
   );
 }

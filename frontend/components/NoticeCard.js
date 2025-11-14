@@ -1,23 +1,30 @@
+import styles from "@/styles/NoticeCard.module.css";
+
 export default function NoticeCard({ notice }) {
-  const badgeClass = {
-    Academic: "badge badge-academic",
-    Technical: "badge badge-technical",
-    Cultural: "badge badge-cultural",
-    Sports: "badge badge-sports",
-    General: "badge badge-general",
-  }[notice.category] || "badge badge-general";
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const foundLinks = notice.original_content.match(urlRegex);
 
   return (
-    <div className="card">
-      <div className="title">{notice.title}</div>
+    <div className={styles.card}>
+      <p className={styles.category}>{notice.category}</p>
+      <h3 className={styles.title}>{notice.title}</h3>
 
-      <div className="summary">{notice.summary}</div>
+      <p className={styles.summary}>{notice.summary}</p>
 
-      <div className={badgeClass}>{notice.category}</div>
-
-      <div className="timestamp">
+      <p className={styles.date}>
         {new Date(notice.created_at).toLocaleString()}
-      </div>
+      </p>
+
+      {foundLinks && (
+        <a
+          href={foundLinks[0]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.button}
+        >
+          Register Now
+        </a>
+      )}
     </div>
   );
 }

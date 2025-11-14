@@ -1,65 +1,32 @@
-.navbar {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1rem 2rem;
+.nav {
+  width: 100%;
+  padding: 14px 32px;
+  background: #ffffff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 
 .logo {
-  cursor: pointer;
-}
-
-.logoText {
   font-size: 1.5rem;
-  font-weight: 700;
-  color: white;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  font-weight: 800;
 }
 
-.navLinks {
-  display: flex;
-  list-style: none;
-  gap: 2rem;
-  align-items: center;
+.logo span {
+  color: #0070f3;
 }
 
-.navLinks li a {
-  color: white;
-  font-weight: 500;
+.links a {
+  margin-left: 20px;
   font-size: 1rem;
-  transition: opacity 0.3s;
-  text-decoration: none;
+  font-weight: 500;
+  transition: 0.2s;
 }
 
-.navLinks li a:hover {
-  opacity: 0.8;
-  text-decoration: none;
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 1rem;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .navLinks {
-    gap: 1rem;
-  }
-
-  .logoText {
-    font-size: 1.2rem;
-  }
+.links a:hover {
+  color: #0070f3;
 }
