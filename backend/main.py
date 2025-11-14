@@ -1,6 +1,5 @@
 """
 FastAPI Backend for CampusConnect-AI
-Handles webhooks, notice processing, and API endpoints
 """
 
 from fastapi import FastAPI, HTTPException, Request
@@ -22,41 +21,26 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# ------------------------------------------------------
-# CORS (Correction #1)
-# ------------------------------------------------------
+# CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],      # later restrict to Vercel domain
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-
-# ------------------------------------------------------
-# Models
-# ------------------------------------------------------
 class Notice(BaseModel):
     title: str
     content: str
     category: Optional[str] = None
 
 
-# ------------------------------------------------------
-# Health Check
-# ------------------------------------------------------
 @app.get("/")
 async def root():
-    return {
-        "status": "healthy",
-        "service": "CampusConnect-AI"
-    }
+    return {"status": "healthy", "service": "CampusConnect-AI"}
 
 
-# ------------------------------------------------------
-# Fetch Notices (Correction #3: created_at instead of timestamp)
-# ------------------------------------------------------
 @app.get("/api/notices")
 async def get_notices(limit: int = 10):
     try:
@@ -70,12 +54,9 @@ async def get_notices(limit: int = 10):
         )
         return {"notices": response.data}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(500, str(e))
 
 
-# ------------------------------------------------------
-# Telegram Webhook (Correction #2 & #3)
-# ------------------------------------------------------
 @app.post("/webhook/telegram")
 async def receive_update(request: Request):
     try:
@@ -85,30 +66,20 @@ async def receive_update(request: Request):
         if not message:
             return {"status": "ignored", "reason": "No message found"}
 
-        # Correction #3 — Safe text extraction
-        text = ""
-
-        # Normal text
-        if "text" in message:
-            text = message["text"]
-
-        # Captions
-        elif "caption" in message:
-            text = message["caption"]
-
-        # Replies with text
-        elif "reply_to_message" in message and "text" in message["reply_to_message"]:
-            text = message["reply_to_message"]["text"]
+        # extract usable text
+        text = (
+            message.get("text") or
+            message.get("caption") or
+            (message.get("reply_to_message", {}).get("text"))
+        )
 
         if not text or text.strip() == "":
-            return {"status": "ignored", "reason": "No usable text found"}
+            return {"status": "ignored", "reason": "No usable text"}
 
-        # AI Processing
         summary = summarize_text(text)
-        category = classify_notice("Notice", text)
+        category = classify_notice("Telegram Notice", text)
 
         supabase = get_supabase_client()
-
         result = (
             supabase.table("notices")
             .insert({
@@ -120,18 +91,12 @@ async def receive_update(request: Request):
             .execute()
         )
 
-        return {
-            "status": "success",
-            "notice_id": result.data[0]["id"]
-        }
+        return {"status": "success", "notice_id": result.data[0]["id"]}
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(500, str(e))
 
 
-# ------------------------------------------------------
-# Manual POST route (/api/notices)
-# ------------------------------------------------------
 @app.post("/api/notices")
 async def create_notice(notice: Notice):
     try:
@@ -139,7 +104,6 @@ async def create_notice(notice: Notice):
         category = classify_notice(notice.title, notice.content)
 
         supabase = get_supabase_client()
-
         result = (
             supabase.table("notices")
             .insert({
@@ -150,19 +114,12 @@ async def create_notice(notice: Notice):
             })
             .execute()
         )
-
-        return {
-            "status": "success",
-            "notice": result.data[0]
-        }
+        return {"status": "success", "notice": result.data[0]}
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(500, str(e))
 
 
-# ------------------------------------------------------
-# Local Dev Runner
-# ------------------------------------------------------
 if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", 8000))
