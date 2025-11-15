@@ -51,3 +51,19 @@
 .button:hover {
   background: #0059c9;
 }
+
+.linkBtn {
+  margin-top: 12px;
+  display: inline-block;
+  background: black;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.linkBtn:hover {
+  background: #222;
+}
