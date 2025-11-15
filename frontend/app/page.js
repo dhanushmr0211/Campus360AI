@@ -1,11 +1,16 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import NoticeCard from "@/components/NoticeCard";
 import Loader from "@/components/Loader";
 import styles from "@/styles/Home.module.css";
+import supabase from "@/utils/supabaseClient";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter(); // MUST be inside component
+
   const [notices, setNotices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -13,19 +18,34 @@ export default function Home() {
 
   const backendURL = process.env.NEXT_PUBLIC_API_URL + "/api/notices";
 
+  // ------------------------------
+  // 🔐 CHECK AUTH BEFORE SHOWING PAGE
+  // ------------------------------
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (!data.session) {
+        router.push("/login");
+      }
+    });
+  }, []);
+
+  // ------------------------------
+  // 📌 FETCH NOTICES
+  // ------------------------------
   useEffect(() => {
     fetch(backendURL)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         setNotices(data.notices || []);
         setLoading(false);
       });
   }, []);
 
-  const filteredNotices = notices.filter(n => 
-    (filter === "All" || n.category === filter) &&
-    (n.summary.toLowerCase().includes(search.toLowerCase()) ||
-     n.title.toLowerCase().includes(search.toLowerCase()))
+  const filteredNotices = notices.filter(
+    (n) =>
+      (filter === "All" || n.category === filter) &&
+      (n.summary?.toLowerCase().includes(search.toLowerCase()) ||
+        n.title?.toLowerCase().includes(search.toLowerCase()))
   );
 
   return (
@@ -47,10 +67,12 @@ export default function Home() {
 
         {/* Filters */}
         <div className={styles.filters}>
-          {["All", "Academic", "General", "Cultural", "Sports"].map(c => (
+          {["All", "Academic", "General", "Cultural", "Sports"].map((c) => (
             <button
               key={c}
-              className={`${styles.filterBtn} ${filter === c ? styles.active : ""}`}
+              className={`${styles.filterBtn} ${
+                filter === c ? styles.active : ""
+              }`}
               onClick={() => setFilter(c)}
             >
               {c}
