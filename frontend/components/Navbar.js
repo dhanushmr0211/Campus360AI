@@ -1,20 +1,32 @@
+"use client";
+
+import styles from "@/styles/Navbar.module.css";
+
 export default function Navbar() {
   return (
-    <nav style={{
-      width: "100%",
-      padding: "14px 30px",
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      backdropFilter: "blur(12px)",
-      background: "rgba(255, 255, 255, 0.2)",
-      borderBottom: "1px solid rgba(255, 255, 255, 0.3)",
-      position: "sticky",
-      top: 0,
-      zIndex: 20
-    }}>
-      <h1 style={{ fontSize: "22px", fontWeight: 600 }}>Campus360 AI</h1>
-      <span style={{ fontSize: "14px" }}>Smart Notice Assistant</span>
-    </nav>
+    <header className={styles.navWrapper}>
+      <div className={styles.navGlow} />
+      <nav className={styles.nav}>
+        <div className={styles.brand}>
+          <div className={styles.badge}>360</div>
+          <div>
+            <p className={styles.title}>Campus360 AI</p>
+            <p className={styles.subtitle}>Intelligent notice stream</p>
+          </div>
+        </div>
+
+        <div className={styles.links}>
+          <a href="/" className={styles.link}>
+            Home
+          </a>
+          <a href="/dashboard" className={styles.link}>
+            Dashboard
+          </a>
+          <a href="/login" className={`${styles.link} ${styles.cta}`}>
+            Sign in
+          </a>
+        </div>
+      </nav>
+    </header>
   );
 }

@@ -1,0 +1,99 @@
+.authPage {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.panel {
+  width: min(420px, 100%);
+  padding: 40px 36px;
+  border-radius: 28px;
+  background: rgba(5, 7, 15, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  position: relative;
+  overflow: hidden;
+}
+
+.panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top right, rgba(123, 90, 255, 0.4), transparent 55%);
+  opacity: 0.8;
+  z-index: 0;
+}
+
+.panelInner {
+  position: relative;
+  z-index: 1;
+}
+
+.headline {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.subtext {
+  color: var(--text-secondary);
+  margin-bottom: 30px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input {
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(5, 7, 15, 0.8);
+  color: white;
+  font-size: 1rem;
+}
+
+.input:focus {
+  outline: none;
+  border-color: rgba(123, 90, 255, 0.8);
+  box-shadow: 0 0 0 3px rgba(123, 90, 255, 0.25);
+}
+
+.primaryButton {
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 16px;
+  background: linear-gradient(120deg, #7b5aff, #4cc9f0);
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: transform 0.2s ease;
+}
+
+.primaryButton:hover {
+  transform: translateY(-2px);
+}
+
+.error {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255, 77, 109, 0.12);
+  border: 1px solid rgba(255, 77, 109, 0.4);
+  color: #ffb3c6;
+}
+
+.switch {
+  margin-top: 18px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.switch a {
+  color: #7b5aff;
+  font-weight: 600;
+}
+

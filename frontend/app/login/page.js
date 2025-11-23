@@ -3,6 +3,7 @@
 import { useState } from "react";
 import supabase from "@/utils/supabaseClient";
 import { useRouter } from "next/navigation";
+import styles from "@/styles/Auth.module.css";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -29,45 +30,43 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{ padding: "40px", maxWidth: "450px", margin: "0 auto" }}>
-      <h1>Login</h1>
+    <div className={styles.authPage}>
+      <div className={styles.panel}>
+        <div className={styles.panelInner}>
+          <h1 className={styles.headline}>Welcome back</h1>
+          <p className={styles.subtext}>
+            Sign in to continue orchestrating your AI-powered campus broadcasts.
+          </p>
 
-      {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
+          {errorMsg && <p className={styles.error}>{errorMsg}</p>}
 
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          required
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
-        />
+          <form onSubmit={handleLogin} className={styles.form}>
+            <input
+              type="email"
+              placeholder="Email address"
+              required
+              onChange={(e) => setEmail(e.target.value)}
+              className={styles.input}
+            />
 
-        <input
-          type="password"
-          placeholder="Password"
-          required
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
-        />
+            <input
+              type="password"
+              placeholder="Password"
+              required
+              onChange={(e) => setPassword(e.target.value)}
+              className={styles.input}
+            />
 
-        <button
-          type="submit"
-          style={{
-            padding: "10px",
-            width: "100%",
-            background: "black",
-            color: "white",
-            cursor: "pointer"
-          }}
-        >
-          Login
-        </button>
-      </form>
+            <button type="submit" className={styles.primaryButton}>
+              Sign In
+            </button>
+          </form>
 
-      <p style={{ marginTop: "10px" }}>
-        Don’t have an account? <a href="/register">Register</a>
-      </p>
+          <p className={styles.switch}>
+            Don’t have an account? <a href="/register">Create one</a>
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

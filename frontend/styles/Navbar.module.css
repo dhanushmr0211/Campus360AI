@@ -1,32 +1,103 @@
-.nav {
+.navWrapper {
+  position: sticky;
+  top: 0;
+  z-index: 40;
   width: 100%;
-  padding: 14px 32px;
-  background: #ffffff;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  padding: 18px 0;
+  backdrop-filter: blur(18px);
+  background: rgba(5, 7, 15, 0.52);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.navGlow {
+  position: absolute;
+  inset: -40px 0 auto;
+  height: 140px;
+  background: radial-gradient(circle, rgba(123, 90, 255, 0.35), transparent 65%);
+  opacity: 0.7;
+  filter: blur(55px);
+  pointer-events: none;
+}
+
+.nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 20;
+  position: relative;
 }
 
-.logo {
-  font-size: 1.5rem;
-  font-weight: 800;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
-.logo span {
-  color: #0070f3;
+.badge {
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #7b5aff, #4cc9f0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 12px 30px rgba(76, 201, 240, 0.45);
 }
 
-.links a {
-  margin-left: 20px;
-  font-size: 1rem;
-  font-weight: 500;
-  transition: 0.2s;
+.title {
+  font-size: 1.15rem;
+  font-weight: 700;
 }
 
-.links a:hover {
-  color: #0070f3;
+.subtitle {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: -4px;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.link {
+  padding: 10px 18px;
+  border-radius: 999px;
+  color: var(--text-secondary);
+  transition: transform 0.25s ease, color 0.25s ease, background 0.25s ease;
+  border: 1px solid transparent;
+}
+
+.link:hover {
+  color: var(--text-primary);
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.cta {
+  background: rgba(123, 90, 255, 0.25);
+  color: white;
+  border-color: rgba(123, 90, 255, 0.45);
+  box-shadow: 0 12px 25px rgba(123, 90, 255, 0.35);
+}
+
+.cta:hover {
+  background: rgba(123, 90, 255, 0.45);
+}
+
+@media (max-width: 720px) {
+  .nav {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
