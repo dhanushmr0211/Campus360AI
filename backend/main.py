@@ -1,6 +1,7 @@
 """
 FastAPI Backend for CampusConnect-AI
 """
+from utils.summarizer import summarize_text
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
